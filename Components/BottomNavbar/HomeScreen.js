@@ -28,6 +28,7 @@ import {useState, useEffect} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Header from '../Common/Header';
+import { Card } from "react-native-elements";
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 
@@ -128,7 +129,7 @@ const HomeScreen = ({navigation}) => {
   const dummyData = Array.from({length: 6}, (_, i) => ({
     id: (i + 1).toString(),
     Category: 'Electronics',
-    Pic: 'https://dialerpstorage.blob.core.windows.net/10127/2936/59.jpg', // Free random image
+    Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', // Free random image
     CategoryID: `100${i}`,
   }));
 
@@ -136,7 +137,7 @@ const HomeScreen = ({navigation}) => {
     _id: Math.random().toString(36).substring(7), // Random unique ID
     SubCategoryID: '12345',
     SubCategory: 'Electronics',
-    Pic: 'https://dialerpstorage.blob.core.windows.net/10127/2936/59.jpg', // Free placeholder image
+    Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', // Free placeholder image
   });
 
   // console.log("pendinf pay res ==",pending_pay_res)
@@ -174,12 +175,12 @@ const HomeScreen = ({navigation}) => {
                       }}>
                       <View>
                         <View style={styles.cardbg}>
-                          <Image
+                          <Card.Image
                             style={styles.cardImage}
                             source={{uri: data.Pic}}
                           />
                         </View>
-                        <Text style={styles.text}>{data.Category}</Text>
+                        <Card.Title style={styles.text}>{data.Category}</Card.Title>
                       </View>
                     </Pressable>
                   );
@@ -253,18 +254,19 @@ const HomeScreen = ({navigation}) => {
                       key={data._id}
                       style={styles.cardContainer2}
                       onPress={() => {
-                       // handleNavigation(data.SubCategoryID, data.SubCategory);
+                        navigation.navigate("listings")
+                 
                       }}>
                       <View>
                         <View style={styles.cardbg}>
-                          <Image
+                          <Card.Image
                             style={styles.sheetImage}
                             source={{uri: data.Pic}}
                           />
                         </View>
-                        <Text style={styles.text}>
+                        <Card.Title style={styles.text}>
                           {data.SubCategory}
-                        </Text>
+                        </Card.Title>
                       </View>
                     </Pressable>
                   );

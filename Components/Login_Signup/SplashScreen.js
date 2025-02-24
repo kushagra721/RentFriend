@@ -29,7 +29,7 @@ const SplashScreen = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       const timeout = setTimeout(() => {
-        navigation.navigate("login");
+        navigation.navigate("Home");
       }, 3000);
 
       return () => clearTimeout(timeout); 

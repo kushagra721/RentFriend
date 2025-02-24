@@ -10,6 +10,7 @@ import VerifyOTP from '../Login_Signup/VerifyOTP';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeScreen from '../BottomNavbar/HomeScreen';
 import Settings from '../BottomNavbar/Settings';
+import Listings from '../Pages/Listings';
 
 // Dummy Screens
 
@@ -106,6 +107,7 @@ const AppNavigator = () => {
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="verifyotp" component={VerifyOTP} />
         <Stack.Screen name="Home" component={BottomTabs} />
+        <Stack.Screen name="listings" component={Listings} />
       </Stack.Navigator>
     </NavigationContainer>
   );

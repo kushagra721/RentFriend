@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome"; 
 
 import { Alert } from "react-native";
 import { Button } from "react-native-paper";
