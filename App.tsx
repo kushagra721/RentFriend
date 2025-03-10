@@ -24,11 +24,11 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import SplashScreen from './Components/Login_Signup/SplashScreen';
-import Login from './Components/Login_Signup/Login';
-import VerifyOTP from './Components/Login_Signup/VerifyOTP';
+import SplashScreen from './Components/Buyer/Login_Signup/SplashScreen';
+import Login from './Components/Buyer/Login_Signup/Login';
+import VerifyOTP from './Components/Buyer/Login_Signup/VerifyOTP';
 
-import AppNavigator from "./Components/Common/AppNavigator";
+import AppNavigator from "./Components/Buyer/Common/AppNavigator";
 
 
 

@@ -126,12 +126,115 @@ const HomeScreen = ({navigation}) => {
   //   );
   // };
 
-  const dummyData = Array.from({length: 6}, (_, i) => ({
-    id: (i + 1).toString(),
-    Category: 'Electronics',
-    Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', // Free random image
-    CategoryID: `100${i}`,
-  }));
+
+  const dummyData = [
+    {
+
+      id : 1,
+      Category : "Sports",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 1
+
+    },
+    {
+
+      id : 2,
+      Category : "Religious",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 2
+
+    },
+    {
+
+      id : 3,
+      Category : "Food",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 3
+
+    },
+    {
+
+      id : 4,
+      Category : "Traveling ",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 4
+
+    },
+    {
+
+      id : 5,
+      Category : "Bollywood",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 5
+
+    },
+    {
+
+      id : 6,
+      Category : "Yoga",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 6
+
+    },
+    {
+
+      id : 7,
+      Category : "Technology & Social Media",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 7
+
+    },
+    {
+
+      id : 8,
+      Category : "Adventure",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 8
+
+    },
+    {
+
+      id : 9,
+      Category : "Dancing",
+      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+      CategoryID: 9
+
+    },
+//     {
+
+//       id : 10,
+//       Category : "Visiting Theme Parks",
+//       Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+//       CategoryID: 10
+
+//     },
+//     {
+
+//       id : 11,
+//       Category : "Music Concerts ",
+//       Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+//       CategoryID: 11
+
+//     }
+// ,
+// {
+
+//   id : 12,
+//   Category : "Visiting Theme Parks",
+//   Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
+//   CategoryID: 12
+
+// }
+
+
+  ]
+
+  // const dummyData = Array.from({length: 6}, (_, i) => ({
+  //   id: (i + 1).toString(),
+  //   Category: 'Electronics',
+  //   Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', 
+  //   CategoryID: `100${i}`,
+  // }));
 
   const dummyDatasheet = Array(6).fill({
     _id: Math.random().toString(36).substring(7), // Random unique ID
@@ -190,7 +293,7 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.greybg}></View>
 
             {/* <Button onPress={showDialog}>Show Dialog</Button> */}
-            <Text
+            {/* <Text
               style={{
                 fontSize: 18,
                 margin: 10,
@@ -199,7 +302,7 @@ const HomeScreen = ({navigation}) => {
                 fontWeight: '500',
               }}>
               Thoughtful Curations
-            </Text>
+            </Text> */}
 
             {/* <View style={[styles.container1]}>
               <Carousel

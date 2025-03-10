@@ -9,8 +9,8 @@ import {
   SafeAreaView,
   StatusBar,
 } from "react-native";
-import logo from "../Icons/Icons/Logo.png";
-import image from "../Icons/Icons/bg.png";
+import logo from "../../Icons/Icons/Logo.png";
+import image from "../../Icons/Icons/bg.png";
 import { useFocusEffect } from "@react-navigation/native";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { getcoldata } from "./Apicall";

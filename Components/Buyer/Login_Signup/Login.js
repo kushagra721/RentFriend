@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -9,30 +9,37 @@ import {
   View,
   ActivityIndicator,
   StatusBar,
-} from "react-native";
-import { useRoute } from "@react-navigation/native";
-import logo from "../Icons/Icons/Logo.png";
-import image from "../Icons/Icons/bg.png";
-import { TextInput, Text, Button } from "react-native-paper";
+  ToastAndroid,
+} from 'react-native';
+import {useRoute} from '@react-navigation/native';
+import logo from '../../Icons/Icons/Logo.png';
 
-import { useContext, useState } from "react";
+import { CallApi, BaseUrl } from '../Common/Functions'
+import image from '../../Icons/Icons/bg.png';
+import {TextInput, Text, Button} from 'react-native-paper';
 
-const Login = ({ navigation }) => {
+import {useContext, useState} from 'react';
 
+import {Dropdown} from 'react-native-element-dropdown';
+
+
+const Login = ({navigation}) => {
   const [mobile, setmobile] = React.useState('');
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [mobileNumber, setMobileNumber] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [isValid, setIsValid] = useState(true);
 
+  const [value, setValue] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
 
+  const data = [
+    {label: 'Buyer', value: '1'},
+    {label: 'Seller', value: '2'},
+  ];
 
-
-
-
-
-  const handleMobileNumberChange = (text) => {
-    const onlyNumbers = text.replace(/[^0-9]/g, "");
+  const handleMobileNumberChange = text => {
+    const onlyNumbers = text.replace(/[^0-9]/g, '');
 
     if (onlyNumbers.length === 10 && /^[6-9]/.test(onlyNumbers)) {
       setMobileNumber(onlyNumbers);
@@ -55,6 +62,39 @@ const Login = ({ navigation }) => {
     }
   };
 
+
+
+  const verifyuser = async() =>{
+
+
+    const url = `${BaseUrl}/external/otp`
+
+    const body = {
+      mobile : mobile,
+      role : value == "1" ? "buyer" : "seller"
+    }
+
+    console.log("body", body)
+
+    const response = await CallApi(url, body);
+
+    if(response?.status ==  true){
+      navigation.navigate('verifyotp');
+
+    }else{
+
+      ToastAndroid.show("User not found", ToastAndroid.SHORT);
+
+
+    }
+
+  
+
+
+
+
+  }
+
   return (
     <>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -64,16 +104,28 @@ const Login = ({ navigation }) => {
             <View style={styles.center}>
               <Image style={styles.logo} source={logo} resizeMode="center" />
               <Text style={[styles.text, styles.textbold]}>
-                Your Home Service Expert
+                Your Friend Indeed
               </Text>
-              <Text style={styles.text}>Quick  | Affordable | Trusted</Text>
-              {/* <TextInput
-                mode="outlined"
-                label="Mobile"
-                left={<TextInput.Icon icon="phone" />}
-                style={styles.input}
-                onChangeText={(text) => handleMobileNumberChange(text)}
-              /> */}
+              <Text style={styles.text}>Quick| Trusted</Text>
+
+              <View style={{width: '80%', marginTop: 20}}>
+                <Text style={styles.label}>Select Login Options</Text>
+                <Dropdown
+                  style={[styles.dropdown, isFocus && {borderColor: 'black'}]}
+                  data={data}
+                  labelField="label"
+                  valueField="value"
+                  placeholder="Select an option"
+                  value={value}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    setValue(item.value);
+                    setIsFocus(false);
+                  }}
+                />
+              </View>
+
               <TextInput
                 mode="outlined"
                 label="Mobile"
@@ -81,7 +133,7 @@ const Login = ({ navigation }) => {
                 style={styles.input}
                 keyboardType="numeric"
                 maxLength={10}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   // Remove any non-numeric characters
                   const cleanedText = text.replace(/[^0-9]/g, '');
 
@@ -93,7 +145,7 @@ const Login = ({ navigation }) => {
               />
 
               {!isValid && (
-                <Text style={{ color: "red", marginTop: 10 }}>
+                <Text style={{color: 'red', marginTop: 10}}>
                   Enter a valid mobile number
                 </Text>
               )}
@@ -102,22 +154,21 @@ const Login = ({ navigation }) => {
                 icon="arrow-right"
                 mode="contained"
                 style={[styles.mt20, styles.button]}
-                disabled={!isValid || mobileNumber == ""}
+                disabled={(!isValid || mobile == '') && value !=""}
                 onPress={() => {
-                 navigation.navigate("verifyotp")
-                }}
-
-              >
+                  verifyuser()
+                //  
+                }}>
                 Request OTP
               </Button>
               {/*  <Button icon="arrow-right" mode="contained" style={[styles.mt20, styles.button]} onPress={() => {navigation.navigate("home") }}>Request OTP</Button>*/}
             </View>
           </View>
-          {loading  && (
-          <View style={styles.loader}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        )}
+          {loading && (
+            <View style={styles.loader}>
+              <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+          )}
         </SafeAreaView>
       </ImageBackground>
     </>
@@ -128,13 +179,14 @@ const styles = StyleSheet.create({
   button: {
     paddingTop: 6,
     paddingBottom: 6,
-    width: "80%",
+    width: '80%',
     borderRadius: 5,
     fontSize: 20,
   },
   mt20: {
     marginTop: 20,
-  }, loader: {
+  },
+  loader: {
     position: 'absolute',
     zIndex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -145,9 +197,9 @@ const styles = StyleSheet.create({
   },
 
   center: {
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 0,
   },
 
@@ -161,32 +213,46 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 30,
-    justifyContent: "center",
-    textAlign: "center",
+    justifyContent: 'center',
+    textAlign: 'center',
     marginTop: StatusBar.currentHeight,
   },
 
   image: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   text: {
     fontSize: 16,
     lineHeight: 30,
-    fontWeight: "normal",
+    fontWeight: 'normal',
     letterSpacing: 0.25,
-    color: "#787878",
-    textAlign: "center",
+    color: '#787878',
+    textAlign: 'center',
   },
   textbold: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 18,
-    color: "#000",
+    color: '#000',
   },
   input: {
     marginTop: 20,
-    width: "80%",
-    backgroundColor: "#fff",
+    width: '80%',
+    backgroundColor: '#fff',
+  },
+
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#333',
+  },
+  dropdown: {
+    height: 50,
+    borderColor: '#464f46',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
 });
 

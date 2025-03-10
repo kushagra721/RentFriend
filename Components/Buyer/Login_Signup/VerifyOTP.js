@@ -10,7 +10,7 @@ import {
   ImageBackground,
   View,
 } from "react-native";
-import image from "../Icons/Icons/bg.png";
+import image from "../../Icons/Icons/bg.png";
 import { useRoute } from "@react-navigation/native";
 import { TextInput, Text, Button } from "react-native-paper";
 
