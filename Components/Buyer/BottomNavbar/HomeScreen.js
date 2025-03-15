@@ -32,6 +32,8 @@ import { Card } from "react-native-elements";
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 
+import { CallApi, BaseUrl } from '../Common/Functions'
+
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 
@@ -41,6 +43,7 @@ const HomeScreen = ({navigation}) => {
   const refRBSheet = useRef();
 
   const [loading, setLoading] = useState(false);
+  const [catdata, setcatdata] = useState([]);
 
   const [visible, setVisible] = React.useState(false);
 
@@ -52,7 +55,38 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {}, []);
 
-  useFocusEffect(useCallback(() => {}, []));
+  useFocusEffect(useCallback(() => {
+
+    getAllCat()
+
+
+  }, []));
+
+  const getAllCat = async() =>{
+
+    
+        const url = `${BaseUrl}/api/categories`
+    
+        const body = {
+          mobile : "",
+          
+        }
+    
+       // console.log("body", body)
+    
+        const response = await CallApi(url, body,"GET");
+        setcatdata(response);
+    
+        if (response?.status === 200) {
+          // assuming response.data has your actual data
+          console.log("Data:", response);
+        } else {
+          ToastAndroid.show(response?.error, ToastAndroid.SHORT);
+        }
+
+
+
+  }
 
   // console.log("hello",sub)
 
@@ -268,11 +302,11 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.content}>
               {/* <Video source ={{uri : ""}} style={{height:100,width:100}}/> */}
               <View style={styles.gridContainer}>
-                {dummyData.map((data, i) => {
+                {catdata?.map((data, i) => {
                   return (
                     <Pressable
                       style={styles.cardContainer}
-                      key={i}
+                      key={data?._id}
                       onPress={() => {
                         refRBSheet.current.open();
                       }}>
@@ -280,10 +314,10 @@ const HomeScreen = ({navigation}) => {
                         <View style={styles.cardbg}>
                           <Card.Image
                             style={styles.cardImage}
-                            source={{uri: data.Pic}}
+                            source={{uri: data.cpic}}
                           />
                         </View>
-                        <Card.Title style={styles.text}>{data.Category}</Card.Title>
+                        <Card.Title style={styles.text}>{data.name}</Card.Title>
                       </View>
                     </Pressable>
                   );

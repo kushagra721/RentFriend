@@ -65,9 +65,10 @@ const Login = ({navigation}) => {
 
 
   const verifyuser = async() =>{
+    setLoading(true)
 
 
-    const url = `${BaseUrl}/external/otp`
+    const url = `${BaseUrl}/companio/external/otp`
 
     const body = {
       mobile : mobile,
@@ -76,13 +77,22 @@ const Login = ({navigation}) => {
 
     console.log("body", body)
 
-    const response = await CallApi(url, body);
+    const response = await CallApi(url, body,"POST");
 
     if(response?.status ==  true){
-      navigation.navigate('verifyotp');
+      setLoading(false)
+      navigation.navigate('verifyotp', {
+        mobile: mobile, // Replace with actual data
+        otp: response?.data, // Any data you want to send
+      });
 
     }else{
-
+      setLoading(false)
+      navigation.navigate('signup', {
+        mobile: mobile,
+        role:value // Replace with actual data
+        
+      });
       ToastAndroid.show("User not found", ToastAndroid.SHORT);
 
 

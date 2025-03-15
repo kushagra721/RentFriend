@@ -12,7 +12,7 @@ import {
 import logo from "../../Icons/Icons/Logo.png";
 import image from "../../Icons/Icons/bg.png";
 import { useFocusEffect } from "@react-navigation/native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { getcoldata } from "./Apicall";
 
 
@@ -20,22 +20,45 @@ import { useCallback } from "react";
 
 const SplashScreen = ({ navigation }) => {
   const [otplogininfo, setotplogininfo] = useState(null);
-  const [pending_pay_res, setpending_pay_res] = useState();
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-
-  // }, []);
 
   useFocusEffect(
     useCallback(() => {
-      const timeout = setTimeout(() => {
-        navigation.navigate("Home");
-      }, 3000);
+      const fetchLoginInfo = async () => {
+        try {
+          const loginInfoString = await AsyncStorage.getItem("logindata_companio");
+          if (loginInfoString) {
+            const loginInfoObject = JSON.parse(loginInfoString);
+            setotplogininfo(loginInfoObject);
+          }
+        } catch (error) {
+          console.error("Error retrieving Logininfo from AsyncStorage:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
-      return () => clearTimeout(timeout); 
-     // fetchLoginInfo();
+      fetchLoginInfo();
     }, [])
   );
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      // Check the condition here and navigate accordingly
+      if (!loading) {
+        if (otplogininfo) {
+          navigation.navigate("Home");
+        } else {
+          navigation.navigate("login");
+        }
+      }
+    }, 3000);
+
+    // Cleanup function for timeout
+    return () => clearTimeout(timeout);
+  }, [otplogininfo, loading, navigation]);
+
 
 
 

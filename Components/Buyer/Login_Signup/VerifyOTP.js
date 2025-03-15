@@ -6,7 +6,7 @@ import {
   Image,
   Pressable,
   SafeAreaView,
-  ActivityIndicator,
+  ActivityIndicator,ToastAndroid,
   ImageBackground,
   View,
 } from "react-native";
@@ -15,9 +15,11 @@ import { useRoute } from "@react-navigation/native";
 import { TextInput, Text, Button } from "react-native-paper";
 
 
+import { CallApi, BaseUrl } from '../Common/Functions'
 
 import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -27,7 +29,9 @@ import { Platform } from 'react-native';
 
 
 
-const VerifyOTP = ({ navigation }) => {
+const VerifyOTP = ({route, navigation }) => {
+  const { mobile, otp } = route.params;
+  console.log(mobile,otp)
 
   const [otpValue, setOtpValue] = useState("");
   const [limitotp, setlimitotp] = useState(1);
@@ -62,6 +66,36 @@ const VerifyOTP = ({ navigation }) => {
     }
   };
 
+  const VerifyOTP = async() =>{
+    console.log("VerifyOTP function called");
+
+    const url = `${BaseUrl}/companio/external/otp/verify`
+
+    const body = {
+      mobile_number : parseInt(mobile),
+      otp :parseInt(otpValue) 
+    }
+
+    console.log("body", body)
+
+    const response = await CallApi(url, body,"POST");
+    console.log("verifyres",response)
+
+    if(response?.status ==  "success"){
+      await AsyncStorage.setItem('logindata_companio', JSON.stringify(response?.data));
+
+
+      navigation.replace("Home")
+      
+    }else{
+
+      ToastAndroid.show(response?.message, ToastAndroid.SHORT);
+
+
+    }
+
+  }
+
 
 
   return (
@@ -73,7 +107,8 @@ const VerifyOTP = ({ navigation }) => {
             <Text style={styles.text}>
               We Have sent you a 4 digit verification code on
             </Text>
-            <Text style={[styles.text, styles.textbold]}>+91-{"9891141997"}</Text>
+            <Text style={[styles.text, styles.textbold]}>+91-{mobile}</Text>
+            <Text style={[styles.text, styles.textbold]}>{otp}</Text>
             <Pressable onPress={() => navigation.goBack()} >
               <Text style={[styles.text, styles.blue, styles.bold, styles.mb20]}>Edit Number</Text>
             </Pressable>
@@ -117,7 +152,8 @@ const VerifyOTP = ({ navigation }) => {
               mode="contained"
               style={[styles.mt20, styles.button]}
               onPress={() => {
-               navigation.replace("Home")
+                VerifyOTP()
+            
               }}
               disabled={otpValue.length < 4}
             >

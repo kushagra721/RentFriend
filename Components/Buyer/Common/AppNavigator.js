@@ -11,6 +11,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import HomeScreen from '../BottomNavbar/HomeScreen';
 import Settings from '../BottomNavbar/Settings';
 import Listings from '../Pages/Listings';
+import SignupForm from '../Login_Signup/SignupForm';
 
 // Dummy Screens
 
@@ -106,6 +107,7 @@ const AppNavigator = () => {
         <Stack.Screen name="FirstTheme" component={SplashScreen} />
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="verifyotp" component={VerifyOTP} />
+        <Stack.Screen name="signup" component={SignupForm} />
         <Stack.Screen name="Home" component={BottomTabs} />
         <Stack.Screen name="listings" component={Listings} />
       </Stack.Navigator>

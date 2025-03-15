@@ -1,25 +1,29 @@
-const BaseUrl = "https://companio.onrender.com/companio"
+const BaseUrl = "https://companio.onrender.com"
 
-const CallApi = async (url,body) => {
+const CallApi = async (url, body, method) => {
+  console.log("url",url)
   try {
-    const response = await fetch(url, {
-      method: "POST",
+    const options = {
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
-    });
+    };
 
-    // Parse response JSON
+    // Only include body if method is not GET
+    if (method !== "GET") {
+      options.body = JSON.stringify(body);
+    }
+
+    const response = await fetch(url, options);
     const data = await response.json();
+    return data;
 
-   
-
-    return data; // Return response data
   } catch (error) {
-    console.error("Error sending OTP:", error.message);
+    console.error("Error calling API:", error.message);
     return { error: error.message };
   }
 };
+
 
 export { CallApi, BaseUrl };
