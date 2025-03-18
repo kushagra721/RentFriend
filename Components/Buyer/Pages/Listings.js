@@ -25,16 +25,16 @@ const Listings = ({navigation}) => {
 
   const dummyData = Array(6).fill({
     'Sub Sub CategoryID': 1,
-    'Sub Sub Category': 'Dummy Category',
-    'Item Pic': 'https://via.placeholder.com/150', // Placeholder image URL
+    'Sub Sub Category': 'Sports',
+    'Item Pic': 'https://dialerpstorage.blob.core.windows.net/40011/Actual_CPwL_badminton.png', // Placeholder image URL
   });
 
   const dummyDatalistig = Array(6).fill({
     _id: '1',
-    Item: 'Dummy Item',
-    MRP: '999',
-    'Item Pic': 'https://via.placeholder.com/150', // Placeholder image
-    'Item Description': "This is a dummy description for the item.",
+    Item: 'Gagan Mittal',
+    MRP: '499',
+    'Item Pic': 'https://dialerpstorage.blob.core.windows.net/40011/Actual_Vf7h_profile-user-svgrepo-com.png', // Placeholder image
+    'Item Description': "Hey there i am Gagan Mittal",
   });
 
   return (
@@ -49,7 +49,7 @@ const Listings = ({navigation}) => {
             //  navigation.navigate("User-Home");
           }}
         />
-        <Text style={[styles.titles]}>All Services</Text>
+        <Text style={[styles.titles]}>All Sellers</Text>
       </View>
       <ScrollView style={{marginTop: 0}}>
         <View>
@@ -60,7 +60,7 @@ const Listings = ({navigation}) => {
               <Image
                 style={styles.Banner}
                 source={{
-                  uri: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_BKeX_Sofa%26CarpetCleaning.png',
+                  uri: 'https://dialerpstorage.blob.core.windows.net/40011/Actual_BBWZ_images%2847%29.jpeg',
                 }}
                 resizeMode="cover"
               />
@@ -72,7 +72,7 @@ const Listings = ({navigation}) => {
           <View style={styles.content}>
             <View style={{flexDirection: 'row'}}>
               <Text style={[styles.title, {flexWrap: 'wrap', flex: 1}]}>
-                {'Cricket'}
+                {'Sports'}
               </Text>
             </View>
             <Text style={styles.greyText}>
@@ -174,7 +174,7 @@ const Listings = ({navigation}) => {
                 ) : (
                   <Text>All Services</Text>
                 )} */}{' '}
-                All Services
+                All Sellers
               </Text>
 
               {dummyDatalistig.map((data, i) => {
@@ -227,7 +227,7 @@ const Listings = ({navigation}) => {
                     </View>
                     <View style={[styles.flexes, {flexDirection: 'row'}]}>
                       <ScrollView
-                        style={{flex: 1, marginLeft: 0, marginTop: 10}}>
+                        style={{flex: 1, marginLeft: 10, marginTop: 10}}>
                         <Text>{data['Item Description']}</Text>
                           
                         
@@ -252,7 +252,7 @@ const Listings = ({navigation}) => {
                         <Text>2</Text>
                       </View> 
                   */}
-                  <Text style={styles.amount}> ₹{"2421"}</Text>
+                  <Text style={styles.amount}>₹{"499"}</Text>
                 </View>
 
                 <Button
@@ -524,7 +524,7 @@ const styles = StyleSheet.create({
   catName: {
     fontSize: 14,
     textAlign: 'center',
-    marginTop: 5,
+    marginTop: 12,
     color: '#404040',
   },
   catTab: {
@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
   },
-  catImg: {width: 75, height: 75, borderRadius: 5},
+  catImg: {width: 55, height: 55, borderRadius: 5},
   itemImg: {width: 95, height: 95, borderRadius: 5},
   flexContent: {
     display: 'flex',

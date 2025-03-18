@@ -6,17 +6,19 @@ import {
   Text,
   Image,
   ImageBackground,
-  SafeAreaView,
+  SafeAreaView,Dimensions ,
   StatusBar,
 } from "react-native";
-import logo from "../../Icons/Icons/Logo.png";
-import image from "../../Icons/Icons/bg.png";
+import logo from "../../Icons/Icons/app_logo.jpeg";
+import image from "../../Icons/Icons/splashScreen.png";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { getcoldata } from "./Apicall";
 
 
 import { useCallback } from "react";
+
+const { width } = Dimensions.get('window');
 
 const SplashScreen = ({ navigation }) => {
   const [otplogininfo, setotplogininfo] = useState(null);
@@ -63,32 +65,33 @@ const SplashScreen = ({ navigation }) => {
 
 
   return (
-    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-      <SafeAreaView>
-        <StatusBar backgroundColor="#000" barStyle="light-content" />
-        <View style={styles.center}>
-          <Image source={logo} style={styles.logo} resizeMode="center" />
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
+    // <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    <SafeAreaView style={styles.container}>
+    <View style={styles.logoContainer}>
+      <Image
+        source={logo}
+        resizeMode="contain"
+        style={styles.logo}
+      />
+    </View>
+  </SafeAreaView>
+    // </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff', // or any background color
+  },
+  logoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   logo: {
-    height: 60,
-    width: 200,
-    marginBottom: 15,
-  },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    flex: 1,
-    justifyContent: "center",
-    height: "100%",
+    width: width * 0.6, // 60% of screen width
+    height: width * 0.6, // maintain square ratio, or adjust as needed
   },
 });
 

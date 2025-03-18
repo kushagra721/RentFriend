@@ -44,6 +44,8 @@ const HomeScreen = ({navigation}) => {
 
   const [loading, setLoading] = useState(false);
   const [catdata, setcatdata] = useState([]);
+  const [catname, setcatname] = useState("");
+  const [subcatdata, setsubcatdata] = useState([]);
 
   const [visible, setVisible] = React.useState(false);
 
@@ -65,7 +67,7 @@ const HomeScreen = ({navigation}) => {
   const getAllCat = async() =>{
 
     
-        const url = `${BaseUrl}/api/categories`
+        const url = `${BaseUrl}/api/Categories/getcategories`
     
         const body = {
           mobile : "",
@@ -87,6 +89,34 @@ const HomeScreen = ({navigation}) => {
 
 
   }
+
+  const getAllsubCat = async(id) =>{
+
+    
+    const url = `${BaseUrl}/api/subCategories/getSubcategories?catId=${id}`
+
+    const body = {
+
+      mobile : "",
+
+    }
+
+   // console.log("body", body)
+
+    const response = await CallApi(url, body,"GET");
+   
+
+    if (response?.status === "success") {
+      setsubcatdata(response?.data);
+      // assuming response.data has your actual data
+      console.log("Data:", response);
+    } else {
+      ToastAndroid.show(response?.error, ToastAndroid.SHORT);
+    }
+
+
+
+}
 
   // console.log("hello",sub)
 
@@ -270,19 +300,19 @@ const HomeScreen = ({navigation}) => {
   //   CategoryID: `100${i}`,
   // }));
 
-  const dummyDatasheet = Array(6).fill({
-    _id: Math.random().toString(36).substring(7), // Random unique ID
-    SubCategoryID: '12345',
-    SubCategory: 'Electronics',
-    Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', // Free placeholder image
-  });
+  // const dummyDatasheet = Array(6).fill({
+  //   _id: Math.random().toString(36).substring(7), // Random unique ID
+  //   SubCategoryID: '12345',
+  //   SubCategory: 'Electronics',
+  //   Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', // Free placeholder image
+  // });
 
   // console.log("pendinf pay res ==",pending_pay_res)
 
   return (
     <>
       <SafeAreaView style={[styles.container, styles.bgWhite]}>
-        <StatusBar backgroundColor="#000" barStyle="light-content" />
+        {/* <StatusBar backgroundColor="#000" barStyle="light-content" /> */}
         <Header />
         <View style={[styles.content, styles.mtTop]}>
           <Pressable
@@ -308,6 +338,8 @@ const HomeScreen = ({navigation}) => {
                       style={styles.cardContainer}
                       key={data?._id}
                       onPress={() => {
+                        getAllsubCat(data?.cid)
+                        setcatname(data?.name)
                         refRBSheet.current.open();
                       }}>
                       <View>
@@ -381,11 +413,11 @@ const HomeScreen = ({navigation}) => {
                 fontWeight: '500',
                 textAlign: 'center',
               }}>
-              {'title'}
+              {catname}
             </Text>
             <ScrollView>
               <View style={styles.gridContainer}>
-                {dummyDatasheet.map((data, i) => {
+                {subcatdata?.map((data, i) => {
                   return (
                     <Pressable
                       key={data._id}
@@ -398,11 +430,11 @@ const HomeScreen = ({navigation}) => {
                         <View style={styles.cardbg}>
                           <Card.Image
                             style={styles.sheetImage}
-                            source={{uri: data.Pic}}
+                            source={{uri: data.scpic}}
                           />
                         </View>
                         <Card.Title style={styles.text}>
-                          {data.SubCategory}
+                          {data.name}
                         </Card.Title>
                       </View>
                     </Pressable>

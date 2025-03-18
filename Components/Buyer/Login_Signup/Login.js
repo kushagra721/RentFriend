@@ -12,7 +12,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import logo from '../../Icons/Icons/Logo.png';
+import logo from "../../Icons/Icons/app_logo.jpeg";
 
 import { CallApi, BaseUrl } from '../Common/Functions'
 import image from '../../Icons/Icons/bg.png';
@@ -107,12 +107,12 @@ const Login = ({navigation}) => {
 
   return (
     <>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+      <View   style={styles.image}>
         <SafeAreaView style={[styles.container]}>
-          <StatusBar backgroundColor="#000" barStyle="light-content" />
+          {/* <StatusBar backgroundColor="#000" barStyle="light-content" /> */}
           <View>
             <View style={styles.center}>
-              <Image style={styles.logo} source={logo} resizeMode="center" />
+              <Image style={styles.logo} source={logo}  />
               <Text style={[styles.text, styles.textbold]}>
                 Your Friend Indeed
               </Text>
@@ -164,7 +164,7 @@ const Login = ({navigation}) => {
                 icon="arrow-right"
                 mode="contained"
                 style={[styles.mt20, styles.button]}
-                disabled={(!isValid || mobile == '') && value !=""}
+                disabled={!(mobile.length === 10 && isValid && value !== "")}
                 onPress={() => {
                   verifyuser()
                 //  
@@ -180,7 +180,7 @@ const Login = ({navigation}) => {
             </View>
           )}
         </SafeAreaView>
-      </ImageBackground>
+      </View>
     </>
   );
 };
@@ -217,15 +217,18 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   logo: {
-    height: 60,
-    width: 200,
-    marginBottom: 0,
+    height: 250,
+    width: 250,
+    marginBottom: -60,
   },
   container: {
+    height:"100%",
+    width:"100%",
     padding: 30,
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: StatusBar.currentHeight,
+    backgroundColor : "white",
+   // marginTop: StatusBar.currentHeight,
   },
 
   image: {

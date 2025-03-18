@@ -42,6 +42,7 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
     <AppNavigator />
   </SafeAreaView>
   );
