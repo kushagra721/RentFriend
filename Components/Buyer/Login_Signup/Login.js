@@ -34,8 +34,8 @@ const Login = ({navigation}) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const data = [
-    {label: 'Buyer', value: '1'},
-    {label: 'Seller', value: '2'},
+    {label: 'Seeker', value: '1'},
+    {label: 'Companion', value: '2'},
   ];
 
   const handleMobileNumberChange = text => {

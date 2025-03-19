@@ -49,7 +49,7 @@ const Listings = ({navigation}) => {
             //  navigation.navigate("User-Home");
           }}
         />
-        <Text style={[styles.titles]}>All Sellers</Text>
+        <Text style={[styles.titles]}>Companions</Text>
       </View>
       <ScrollView style={{marginTop: 0}}>
         <View>
@@ -174,7 +174,7 @@ const Listings = ({navigation}) => {
                 ) : (
                   <Text>All Services</Text>
                 )} */}{' '}
-                All Sellers
+                All Companions
               </Text>
 
               {dummyDatalistig.map((data, i) => {

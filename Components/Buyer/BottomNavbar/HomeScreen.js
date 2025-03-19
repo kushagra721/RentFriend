@@ -38,6 +38,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 
 import {BackHandler, Alert} from 'react-native';
+import { resetCache } from '../../../metro.config';
 
 const HomeScreen = ({navigation}) => {
   const refRBSheet = useRef();
@@ -65,6 +66,7 @@ const HomeScreen = ({navigation}) => {
   }, []));
 
   const getAllCat = async() =>{
+    setLoading(true)
 
     
         const url = `${BaseUrl}/api/Categories/getcategories`
@@ -78,11 +80,18 @@ const HomeScreen = ({navigation}) => {
     
         const response = await CallApi(url, body,"GET");
         setcatdata(response);
+        if(response){
+          setLoading(false)
+        }else{
+          setLoading(false)
+        }
     
         if (response?.status === 200) {
+          setLoading(false)
           // assuming response.data has your actual data
           console.log("Data:", response);
         } else {
+          setLoading(false)
           ToastAndroid.show(response?.error, ToastAndroid.SHORT);
         }
 
@@ -91,6 +100,7 @@ const HomeScreen = ({navigation}) => {
   }
 
   const getAllsubCat = async(id) =>{
+    setLoading(true)
 
     
     const url = `${BaseUrl}/api/subCategories/getSubcategories?catId=${id}`
@@ -107,10 +117,16 @@ const HomeScreen = ({navigation}) => {
    
 
     if (response?.status === "success") {
+      setLoading(false)
+
+    
       setsubcatdata(response?.data);
       // assuming response.data has your actual data
-      console.log("Data:", response);
+     // console.log("Data:", response);
     } else {
+      setLoading(false)
+
+    
       ToastAndroid.show(response?.error, ToastAndroid.SHORT);
     }
 

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import logo from '../../Icons/Icons/Logo.png';
+import logo from '../../Icons/Icons/app_logo.jpeg';
 import image from '../../Icons/Icons/bg.png';
 import {TextInput, Text, Button} from 'react-native-paper';
 import {CallApi, BaseUrl} from '../Common/Functions';
@@ -79,15 +79,15 @@ const SignupForm = ({route, navigation}) => {
 
   return (
     <>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    
         <SafeAreaView style={[styles.container]}>
           <View>
             <View style={styles.center}>
               <Image style={styles.logo} source={logo} resizeMode="center" />
               <Text style={[styles.text, styles.textbold]}>
-                Your Home Service Expert
+              Your Friend Indeed
               </Text>
-              <Text style={styles.text}>Quick | Affordable | Trusted</Text>
+              {/* <Text style={styles.text}>Quick | Affordable | Trusted</Text> */}
 
               <View style={[styles.card, styles.flx]}>
                 <Pressable style={{width: '100%'}}></Pressable>
@@ -134,7 +134,7 @@ const SignupForm = ({route, navigation}) => {
             </View>
           )}
         </SafeAreaView>
-      </ImageBackground>
+
     </>
   );
 };
@@ -171,20 +171,24 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   logo: {
-    height: 60,
-    width: 200,
-    marginBottom: 0,
+    height: 250,
+    width: 250,
+    marginBottom: -60,
   },
   container: {
+    height:"100%",
+    width:"100%",
     padding: 30,
     justifyContent: 'center',
     textAlign: 'center',
-    marginTop: StatusBar.currentHeight,
+    backgroundColor:"white",
+
   },
 
   image: {
-    flex: 1,
-    justifyContent: 'center',
+    height:"100%",
+    width:"100%",
+    backgroundColor:"white"
   },
   text: {
     fontSize: 16,

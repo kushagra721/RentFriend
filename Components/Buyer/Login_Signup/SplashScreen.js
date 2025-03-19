@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: width * 0.6, // 60% of screen width
-    height: width * 0.6, // maintain square ratio, or adjust as needed
+    width: width * 0.8, // 60% of screen width
+    height: width * 0.8, // maintain square ratio, or adjust as needed
   },
 });
 
