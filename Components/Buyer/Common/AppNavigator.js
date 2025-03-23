@@ -7,11 +7,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import SplashScreen from '../Login_Signup/SplashScreen';
 import Login from '../Login_Signup/Login';
 import VerifyOTP from '../Login_Signup/VerifyOTP';
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from '../BottomNavbar/HomeScreen';
 import Settings from '../BottomNavbar/Settings';
 import Listings from '../Pages/Listings';
 import SignupForm from '../Login_Signup/SignupForm';
+import Category from '../BottomNavbar/Category';
 
 // Dummy Screens
 
@@ -63,13 +64,28 @@ const BottomTabs = () => {
 
       <Tab.Screen
         options={{
-          tabBarLabel: 'Events',
+          tabBarLabel: 'Categories',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="comment" color={color} size={size} />
+            <MaterialCommunityIcons name="apps" color={color} size={size} />
           ),
         }}
-        name="events"
-        component={EventScreen}
+        name="Categories"
+        component={Category}
+      />
+
+      <Tab.Screen
+        options={{
+          tabBarLabel: 'Request',
+          tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons
+              name="account-plus"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+        name="Request"
+        component={ChatScreen}
       />
 
       <Tab.Screen
@@ -82,8 +98,6 @@ const BottomTabs = () => {
         name="Chat"
         component={ChatScreen}
       />
-
- 
 
       <Tab.Screen
         options={{

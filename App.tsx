@@ -37,14 +37,17 @@ import AppNavigator from "./Components/Buyer/Common/AppNavigator";
 
 
 
+
 function App(): React.JSX.Element {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    
+      <SafeAreaView style={{ flex: 1 }}>
         <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
-    <AppNavigator />
-  </SafeAreaView>
+        <AppNavigator />
+      </SafeAreaView>
+ 
   );
 }
 

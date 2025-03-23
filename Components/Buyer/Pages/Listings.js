@@ -26,15 +26,17 @@ const Listings = ({navigation}) => {
   const dummyData = Array(6).fill({
     'Sub Sub CategoryID': 1,
     'Sub Sub Category': 'Sports',
-    'Item Pic': 'https://dialerpstorage.blob.core.windows.net/40011/Actual_CPwL_badminton.png', // Placeholder image URL
+    'Item Pic':
+      'https://dialerpstorage.blob.core.windows.net/40011/Actual_CPwL_badminton.png', // Placeholder image URL
   });
 
   const dummyDatalistig = Array(6).fill({
     _id: '1',
     Item: 'Gagan Mittal',
     MRP: '499',
-    'Item Pic': 'https://dialerpstorage.blob.core.windows.net/40011/Actual_Vf7h_profile-user-svgrepo-com.png', // Placeholder image
-    'Item Description': "Hey there i am Gagan Mittal",
+    'Item Pic':
+      'https://dialerpstorage.blob.core.windows.net/40011/Actual_Vf7h_profile-user-svgrepo-com.png', // Placeholder image
+    'Item Description': 'Hey there i am Gagan Mittal',
   });
 
   return (
@@ -55,7 +57,7 @@ const Listings = ({navigation}) => {
         <View>
           {/* {banner?.response?.records?.map((d, i) => {
             return ( */}
-          <View key={"232"}>
+          <View key={'232'}>
             <View>
               <Image
                 style={styles.Banner}
@@ -111,13 +113,10 @@ const Listings = ({navigation}) => {
                         style={{
                           ...styles.catImg,
                           borderColor:
-                            "" === d['Sub Sub CategoryID']
+                            '' === d['Sub Sub CategoryID']
                               ? '#000'
                               : 'transparent',
-                          borderWidth:
-                            "" === d['Sub Sub CategoryID']
-                              ? 2
-                              : 0,
+                          borderWidth: '' === d['Sub Sub CategoryID'] ? 2 : 0,
                           cursor: 'pointer',
                         }}
                         source={{uri: d['Item Pic']}}
@@ -127,13 +126,11 @@ const Listings = ({navigation}) => {
                         style={{
                           ...styles.catName,
                           borderBottomColor:
-                            "" === d['Sub Sub CategoryID']
+                            '' === d['Sub Sub CategoryID']
                               ? '#000'
                               : 'transparent',
                           borderBottomWidth:
-                            "" === d['Sub Sub CategoryID']
-                              ? 2
-                              : 0,
+                            '' === d['Sub Sub CategoryID'] ? 2 : 0,
                           cursor: 'pointer',
                         }}>
                         {d['Sub Sub Category']}
@@ -229,8 +226,6 @@ const Listings = ({navigation}) => {
                       <ScrollView
                         style={{flex: 1, marginLeft: 10, marginTop: 10}}>
                         <Text>{data['Item Description']}</Text>
-                          
-                        
                       </ScrollView>
                     </View>
                   </View>
@@ -252,15 +247,13 @@ const Listings = ({navigation}) => {
                         <Text>2</Text>
                       </View> 
                   */}
-                  <Text style={styles.amount}>₹{"499"}</Text>
+                  <Text style={styles.amount}>₹{'499'}</Text>
                 </View>
 
                 <Button
                   icon="arrow-right"
                   mode="contained"
-                  onPress={() => {
-                   
-                  }}
+                  onPress={() => {}}
                   style={styles.btn}>
                   Proceed
                 </Button>

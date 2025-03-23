@@ -28,24 +28,32 @@ import {useState, useEffect} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Header from '../Common/Header';
-import { Card } from "react-native-elements";
+import {Card} from 'react-native-elements';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import { CallApi, BaseUrl } from '../Common/Functions'
+import {CallApi, BaseUrl} from '../Common/Functions';
 
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 
 import {BackHandler, Alert} from 'react-native';
-import { resetCache } from '../../../metro.config';
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
+//import Carousel from 'react-native-snap-carousel';
+
+
+//import Carousel from 'react-native-snap-carousel';
+
+
+const {width} = Dimensions.get('window');
 
 const HomeScreen = ({navigation}) => {
   const refRBSheet = useRef();
+  
 
   const [loading, setLoading] = useState(false);
   const [catdata, setcatdata] = useState([]);
-  const [catname, setcatname] = useState("");
+  const [catname, setcatname] = useState('');
   const [subcatdata, setsubcatdata] = useState([]);
 
   const [visible, setVisible] = React.useState(false);
@@ -58,279 +66,108 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {}, []);
 
-  useFocusEffect(useCallback(() => {
+  useFocusEffect(
+    useCallback(() => {
+    //  getAllCat();
+    }, []),
+  );
 
-    getAllCat()
-
-
-  }, []));
-
-  const getAllCat = async() =>{
-    setLoading(true)
-
-    
-        const url = `${BaseUrl}/api/Categories/getcategories`
-    
-        const body = {
-          mobile : "",
-          
-        }
-    
-       // console.log("body", body)
-    
-        const response = await CallApi(url, body,"GET");
-        setcatdata(response);
-        if(response){
-          setLoading(false)
-        }else{
-          setLoading(false)
-        }
-    
-        if (response?.status === 200) {
-          setLoading(false)
-          // assuming response.data has your actual data
-          console.log("Data:", response);
-        } else {
-          setLoading(false)
-          ToastAndroid.show(response?.error, ToastAndroid.SHORT);
-        }
+  const bannerData = [
+    {
+      id: 1,
+      image: 'https://dialerpstorage.blob.core.windows.net/40011/Actual_BBWZ_images%2847%29.jpeg',
+    },
+    {
+      id: 2,
+      image: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_l66h_IMG_20250318_230127.jpg',
+    },
+    {
+      id: 3,
+      image: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_NVCu_images%2850%29.jpeg',
+    },
+    {
+      id: 4,
+      image: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_xVWF_images%2849%29.jpeg',
+    },
+  ];
 
 
 
-  }
+  const getAllCat = async () => {
+    setLoading(true);
 
-  const getAllsubCat = async(id) =>{
-    setLoading(true)
-
-    
-    const url = `${BaseUrl}/api/subCategories/getSubcategories?catId=${id}`
+    const url = `${BaseUrl}/api/Categories/getcategories`;
 
     const body = {
+      mobile: '',
+    };
 
-      mobile : "",
+    // console.log("body", body)
 
+    const response = await CallApi(url, body, 'GET');
+    setcatdata(response);
+    if (response) {
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
 
-   // console.log("body", body)
-
-    const response = await CallApi(url, body,"GET");
-   
-
-    if (response?.status === "success") {
-      setLoading(false)
-
-    
-      setsubcatdata(response?.data);
+    if (response?.status === 200) {
+      setLoading(false);
       // assuming response.data has your actual data
-     // console.log("Data:", response);
+      console.log('Data:', response);
     } else {
-      setLoading(false)
-
-    
+      setLoading(false);
       ToastAndroid.show(response?.error, ToastAndroid.SHORT);
     }
+  };
 
+  const getAllsubCat = async id => {
+    setLoading(true);
 
+    const url = `${BaseUrl}/api/subCategories/getSubcategories?catId=${id}`;
 
-}
+    const body = {
+      mobile: '',
+    };
 
-  // console.log("hello",sub)
+    // console.log("body", body)
 
-  // const banner = [
-  //   {
-  //     id: '1',
-  //     title: 'Wireless Headphones',
-  //     imagePath: 'https://source.unsplash.com/400x300/?headphones',
-  //     MRP: '$50',
-  //     subcategory: 'Electronics',
-  //     subCategoryID: '101',
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'Running Shoes',
-  //     imagePath: 'https://source.unsplash.com/400x300/?shoes',
-  //     MRP: '$80',
-  //     subcategory: 'Footwear',
-  //     subCategoryID: '102',
-  //   },
-  //   {
-  //     id: '3',
-  //     title: 'Smart Watch',
-  //     imagePath: 'https://source.unsplash.com/400x300/?smartwatch',
-  //     MRP: '$120',
-  //     subcategory: 'Gadgets',
-  //     subCategoryID: '103',
-  //   },
-  //   {
-  //     id: '4',
-  //     title: 'Backpack',
-  //     imagePath: 'https://source.unsplash.com/400x300/?backpack',
-  //     MRP: '$40',
-  //     subcategory: 'Accessories',
-  //     subCategoryID: '104',
-  //   },
-  //   {
-  //     id: '5',
-  //     title: 'Gaming Laptop',
-  //     imagePath: 'https://source.unsplash.com/400x300/?laptop',
-  //     MRP: '$1500',
-  //     subcategory: 'Computers',
-  //     subCategoryID: '105',
-  //   },
-  //   {
-  //     id: '6',
-  //     title: 'Mountain Bike',
-  //     imagePath: 'https://source.unsplash.com/400x300/?bicycle',
-  //     MRP: '$300',
-  //     subcategory: 'Outdoor',
-  //     subCategoryID: '106',
-  //   },
-  // ];
+    const response = await CallApi(url, body, 'GET');
 
-  // const renderItembanner = ({item}) => {
-  //   return (
-  //     <Pressable
-  //       onPress={() => {
-  //         //  handleNavigation(item.subCategoryID, item.subcategory); // Assuming handleNavigation accepts id and title
-  //       }}
-  //       key={item.id}>
-  //       <Card containerStyle={styles.cardContainer1}>
-  //         <Card.Image
-  //           source={{uri: item.imagePath}}
-  //           style={styles.cardImage1}
-  //         />
-  //         <Card.Title>{item.title}</Card.Title>
-  //         {/* <Text>{item.MRP}</Text> */}
-  //       </Card>
-  //     </Pressable>
-  //   );
-  // };
+    if (response?.status === 'success') {
+      setLoading(false);
 
+      setsubcatdata(response?.data);
+    } else {
+      setLoading(false);
 
-  const dummyData = [
-    {
+      ToastAndroid.show(response?.error, ToastAndroid.SHORT);
+    }
+  };
 
-      id : 1,
-      Category : "Sports",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 1
+  const dummyDatalistig = Array(6).fill({
+    _id: '1',
+    Item: 'Gagan Mittal',
+    MRP: '499',
+    'Item Pic':
+      'https://dialerpstorage.blob.core.windows.net/40011/Actual_Vf7h_profile-user-svgrepo-com.png', // Placeholder image
+    'Item Description': 'Hey there i am Gagan Mittal',
+  });
 
-    },
-    {
-
-      id : 2,
-      Category : "Religious",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 2
-
-    },
-    {
-
-      id : 3,
-      Category : "Food",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 3
-
-    },
-    {
-
-      id : 4,
-      Category : "Traveling ",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 4
-
-    },
-    {
-
-      id : 5,
-      Category : "Bollywood",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 5
-
-    },
-    {
-
-      id : 6,
-      Category : "Yoga",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 6
-
-    },
-    {
-
-      id : 7,
-      Category : "Technology & Social Media",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 7
-
-    },
-    {
-
-      id : 8,
-      Category : "Adventure",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 8
-
-    },
-    {
-
-      id : 9,
-      Category : "Dancing",
-      Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-      CategoryID: 9
-
-    },
-//     {
-
-//       id : 10,
-//       Category : "Visiting Theme Parks",
-//       Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-//       CategoryID: 10
-
-//     },
-//     {
-
-//       id : 11,
-//       Category : "Music Concerts ",
-//       Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-//       CategoryID: 11
-
-//     }
-// ,
-// {
-
-//   id : 12,
-//   Category : "Visiting Theme Parks",
-//   Pic : "https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg",
-//   CategoryID: 12
-
-// }
-
-
-  ]
-
-  // const dummyData = Array.from({length: 6}, (_, i) => ({
-  //   id: (i + 1).toString(),
-  //   Category: 'Electronics',
-  //   Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', 
-  //   CategoryID: `100${i}`,
-  // }));
-
-  // const dummyDatasheet = Array(6).fill({
-  //   _id: Math.random().toString(36).substring(7), // Random unique ID
-  //   SubCategoryID: '12345',
-  //   SubCategory: 'Electronics',
-  //   Pic: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_Aoh5_Walking-Dog1.jpg', // Free placeholder image
-  // });
-
-  // console.log("pendinf pay res ==",pending_pay_res)
+  const dummyData = Array(6).fill({
+    'Sub Sub CategoryID': 1,
+    'Sub Sub Category': 'Sports',
+    'Item Pic':
+      'https://dialerpstorage.blob.core.windows.net/40011/Actual_CPwL_badminton.png', // Placeholder image URL
+  });
 
   return (
     <>
       <SafeAreaView style={[styles.container, styles.bgWhite]}>
         {/* <StatusBar backgroundColor="#000" barStyle="light-content" /> */}
         <Header />
-        <View style={[styles.content, styles.mtTop]}>
+        <View style={[styles.content_, styles.mtTop]}>
           <Pressable
             style={[styles.sborder, styles.elevation]}
             onPress={() => {
@@ -343,122 +180,92 @@ const HomeScreen = ({navigation}) => {
           </Pressable>
         </View>
 
-        <ScrollView>
+      
+
+       
+        <ScrollView style={{marginTop: 0}}>
+        <View style={{marginTop:0,marginBottom:10,marginStart:5,marginEnd:5}}>
+      <SwiperFlatList
+        autoplay
+        autoplayDelay={2}
+        autoplayLoop
+        index={0}
+        showPagination
+        data={bannerData}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item.image }} style={styles.bannerImage}  />
+        )}
+      />
+    </View>
           <View>
-            <View style={styles.content}>
-              {/* <Video source ={{uri : ""}} style={{height:100,width:100}}/> */}
-              <View style={styles.gridContainer}>
-                {catdata?.map((data, i) => {
+            <View style={styles.greybg}></View>
+
+            <View style={[styles.listing, styles.bgWhite]}>
+              <View>
+                <Text style={[styles.subHead, styles.boldTxt]}>
+                  All Companions
+                </Text>
+
+                {dummyDatalistig.map((data, i) => {
                   return (
-                    <Pressable
-                      style={styles.cardContainer}
-                      key={data?._id}
-                      onPress={() => {
-                        getAllsubCat(data?.cid)
-                        setcatname(data?.name)
-                        refRBSheet.current.open();
-                      }}>
-                      <View>
-                        <View style={styles.cardbg}>
-                          <Card.Image
-                            style={styles.cardImage}
-                            source={{uri: data.cpic}}
-                          />
+                    <View key={i} style={[styles.itemList]}>
+                      <View style={[styles.flexx]}>
+                        <View style={styles.wd80}>
+                          <Text style={[styles.subTitle, styles.boldTxt]}>
+                            {data.Item}
+                          </Text>
+                          <Text style={styles.greyText}>
+                            <MaterialCommunityIcons
+                              name="star"
+                              size={17}
+                              color="gold"
+                            />{' '}
+                            0.0 (Reviews 0)
+                          </Text>
+                          <Text style={[styles.boldTxt, styles.price]}>
+                            ₹{parseInt(data.MRP, 10)}
+                          </Text>
+                          <View style={[styles.desc]}></View>
                         </View>
-                        <Card.Title style={styles.text}>{data.name}</Card.Title>
+                        <View style={styles.wd20}>
+                          <Image
+                            style={styles.itemImg}
+                            source={{uri: data['Item Pic']}}
+                            resizeMode="cover"
+                          />
+
+                          <Pressable style={styles.button}>
+                            <Text
+                              style={{
+                                color: 'white',
+                                textTransform: 'uppercase',
+                                marginTop: -4,
+                              }}>
+                              Add
+                            </Text>
+                          </Pressable>
+
+                          <Pressable style={styles.wish}>
+                            <MaterialCommunityIcons
+                              name="heart"
+                              size={18}
+                              color="#d3d3d3"
+                            />
+                          </Pressable>
+                        </View>
                       </View>
-                    </Pressable>
+                      <View style={[styles.flexes, {flexDirection: 'row'}]}>
+                        <ScrollView
+                          style={{flex: 1, marginLeft: 10, marginTop: 10}}>
+                          <Text>{data['Item Description']}</Text>
+                        </ScrollView>
+                      </View>
+                    </View>
                   );
                 })}
               </View>
             </View>
-            <View style={styles.greybg}></View>
-
-            {/* <Button onPress={showDialog}>Show Dialog</Button> */}
-            {/* <Text
-              style={{
-                fontSize: 18,
-                margin: 10,
-                padding: 10,
-                color: '#4c40ed',
-                fontWeight: '500',
-              }}>
-              Thoughtful Curations
-            </Text> */}
-
-            {/* <View style={[styles.container1]}>
-              <Carousel
-                data={banner}
-                renderItem={renderItembanner}
-                sliderWidth={400}
-                itemWidth={200}
-                layout="default"
-                loop
-                style={{}}
-              />
-            </View> */}
-
-            <View style={{marginBottom: 100}}></View>
           </View>
-
-          <RBSheet
-            ref={refRBSheet}
-            closeOnDragDown={true}
-            closeOnPressMask={true}
-            closeOnPressBack={true}
-            height={500}
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0, 0, 0, .7)',
-              },
-              draggableIcon: {
-                backgroundColor: '#000',
-              },
-              container: {
-                padding: 15,
-                backgroundColor: '#fff',
-                opacity: 1,
-              },
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                margin: 10,
-                padding: 10,
-                color: '#000',
-                fontWeight: '500',
-                textAlign: 'center',
-              }}>
-              {catname}
-            </Text>
-            <ScrollView>
-              <View style={styles.gridContainer}>
-                {subcatdata?.map((data, i) => {
-                  return (
-                    <Pressable
-                      key={data._id}
-                      style={styles.cardContainer2}
-                      onPress={() => {
-                        navigation.navigate("listings")
-                 
-                      }}>
-                      <View>
-                        <View style={styles.cardbg}>
-                          <Card.Image
-                            style={styles.sheetImage}
-                            source={{uri: data.scpic}}
-                          />
-                        </View>
-                        <Card.Title style={styles.text}>
-                          {data.name}
-                        </Card.Title>
-                      </View>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </ScrollView>
-          </RBSheet>
         </ScrollView>
 
         {loading && (
@@ -472,48 +279,18 @@ const HomeScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  btn: {padding: 0, lineHeight: 30, borderRadius: 5},
-
-  sky: {color: '#007fff'},
-  statuss: {fontSize: 18, fontWeight: 600, marginBottom: 5},
-  boldTxt: {fontWeight: '600'},
-  blackText: {color: '#000000'},
-  wd100: {width: '100%'},
-  greyTxt: {
-    color: '#707070',
-    fontSize: 16,
-    lineHeight: 15,
-    marginBottom: 0,
-    fontSize: 15,
+  wish: {
+    marginTop: -120,
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    padding: 8,
+    height: 35,
+    width: 35,
+    borderWidth: 1,
+    borderColor: '#707070',
+    marginLeft: -50,
   },
-  flex: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  loader: {
-    position: 'absolute',
-    zIndex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardImg: {width: 60, height: 60, marginRight: 10, borderRadius: 7},
-  Statuss: {fontSize: 17, fontWeight: 600, marginBottom: 5},
-
-  serName: {fontSize: 16, fontWeight: 500, color: '#000'},
-  modal: {backgroundColor: '#fff', borderRadius: 10},
-  sr: {fontSize: 17, marginLeft: 10},
-  elevation: {
-    elevation: 2,
-    shadowColor: '#d3d3d3',
-    shadowOffset: {width: 1, height: 0},
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
+  mtTop: {marginTop: -20, marginBottom: 15, paddingBottom: 2},
   sborder: {
     height: 50,
     borderWidth: 1,
@@ -525,8 +302,211 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
   },
-  mtTop: {marginTop: -20, paddingBottom: 2},
+  bannerImage: {
+    width: width,
+    height: 200,
+    borderRadius: 0,
+  },
+  elevation: {
+    elevation: 2,
+    shadowColor: '#d3d3d3',
+    shadowOffset: {width: 1, height: 0},
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  loader: {
+    position: 'absolute',
+    zIndex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
+  border: {
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    borderColor: '#d3d3d3',
+    borderStyle: 'dashed',
+  },
+  container: {
+    flex: 1,
+  },
+  titles: {fontSize: 18, marginLeft: 10, fontWeight: '600'},
+  flexxess: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  upperhead: {
+    borderBottomColor: '#d3d3d3',
+    borderBottomWidth: 1,
+    padding: 15,
+  },
+  just: {justifyContent: 'center', alignItems: 'center'},
+  cartite: {fontSize: 16, textAlign: 'center'},
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  cartItemName: {width: 130},
+  textInput: {
+    height: 37,
+    borderWidth: 0,
+    padding: 0,
+    backgroundColor: '#fff',
+    textAlign: 'left',
+    borderBottomWidth: 0,
+    borderRadius: 0,
+    borderBottomColor: '#ffff',
+    width: 40,
+    color: 'rgb(104, 71, 192)',
+    elevation: 0,
+    borderColor: 'white',
+  },
+  counterBtn: {
+    backgroundColor: '#fff',
+    width: 25,
+    height: 35,
+    textAlign: 'center',
+    lineHeight: 20,
+    paddingTop: 7,
+    paddingLeft: 4,
+  },
+  counter: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#d3d3d3',
+    overflow: 'hidden',
+    height: 35,
+  },
+  cartItem: {marginBottom: 20},
+  bottomView: {
+    padding: 10,
+    borderTopColor: '#d3d3d3',
+    borderTopWidth: 1,
+    backgroundColor: '#ffffff',
+    height: 60,
+  },
+  btn: {padding: 0, lineHeight: 30, borderRadius: 5},
+  number: {
+    backgroundColor: '#f2f2f2',
+    lineHeight: 10,
+    paddingTop: 4,
+    marginRight: 10,
+    borderRadius: 5,
+    height: 30,
+    minWidth: 30,
+    textAlign: 'center',
+    color: '#000',
+    fontWeight: '500',
+    paddingLeft: 10,
+  },
+  amount: {fontWeight: '700', fontSize: 18},
+  flexxes: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 40,
+  },
+  bgWhite: {backgroundColor: '#fff'},
+  button: {
+    borderWidth: 1,
+    paddingBottom: 10,
+    borderColor: 'rgb(104, 71, 192)',
+    padding: 0,
+    backgroundColor: 'rgb(104, 71, 192)',
+    width: 90,
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 2,
+    paddingTop: 10,
+    borderRadius: 5,
+    color: '#fff',
+    height: 38,
+  },
+
+  itemList: {
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    borderBottomColor: '#d3d3d3',
+    padding: 20,
+    marginTop: 5,
+    backgroundColor: '#fff',
+    borderStyle: 'dashed',
+  },
+  flexes: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    marginLeft: -20,
+  },
+  mticon: {marginRight: 10, marginTop: 10},
+  desc: {
+    marginTop: 15,
+    marginBottom: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+  price: {
+    marginTop: 3,
+    fontWeight: '700',
+  },
+  subTitle: {fontSize: 17, textTransform: 'capitalize', marginBottom: 5},
+  mt30: {marginTop: 30},
+  wd80: {width: '70%', paddingRight: 10},
+  wd20: {
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    textAlign: 'center',
+    marginTop: -10,
+  },
+  flexx: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'start',
+    justifyContent: 'center',
+  },
+  subHead: {fontSize: 22, padding: 20},
+  catName: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 12,
+    color: '#404040',
+  },
+  catTab: {
+    width: '25%',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  catImg: {width: 55, height: 55, borderRadius: 5},
+  itemImg: {width: 95, height: 95, borderRadius: 5},
+  flexContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+  },
+  greybg: {backgroundColor: '#E8E8E8', height: 10},
   boldTxt: {fontWeight: '600'},
   blackText: {color: '#404040'},
   greyText: {color: '#888888'},
@@ -537,87 +517,21 @@ const styles = StyleSheet.create({
     padding: 12,
     marginTop: 18,
   },
-  sheetImage: {height: 70, width: 70, borderRadius: 5},
-  greybg: {backgroundColor: '#E8E8E8', height: 10},
-  text: {fontSize: 13, fontWeight: 400, color: '#303030', marginTop: 5},
-  cardbg: {
-    backgroundColor: '#fff',
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    padding: 10,
-    alignItems: 'center',
-    borderRadius: 5,
-    width: 'auto',
+  title: {
+    fontSize: 22,
+    color: '#303030',
+    fontWeight: '700',
+    marginBottom: 10,
   },
-  bgWhite: {backgroundColor: '#fff'},
-  content: {padding: 18, paddingBottom: 0},
-  gridContainer: {
-    flexDirection: 'row',
+  content: {
+    padding: 20,
+    display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    paddingBottom: 20,
+    backgroundColor: '#ffffff',
   },
-  cardContainer: {
-    marginTop: 5,
-    width: '33%',
-    marginBottom: 0,
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexGrow: 0,
-  },
-  cardImage: {
-    width: 55,
-    height: 55,
-  },
-  container1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 0,
-    padding: 0,
-    marginTop: 0,
-    marginBottom: 100,
-  },
-  container1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 0,
-    padding: 0,
-    marginTop: 0,
-    marginBottom: 100,
-  },
-  container: {
-    flex: 1,
-    
-  },
-  cardContainer1: {
-    borderRadius: 10,
-    marginBottom: 0,
-    marginTop: 10,
-    margin: 0,
-    padding: 0,
-    borderWidth: 1,
-  },
-  cardImage1: {
-    height: 200,
-  },
-
-  cardContainer2: {
-    marginTop: 5,
-    width: '22%',
-    marginBottom: 0,
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexGrow: 0,
-    paddingBottom: 20,
-    margin: 5,
-  },
+  content_: {padding: 18, paddingBottom: 0},
+  Banner: {height: 140, width: 'auto', backgroundColor: '#000'},
+  sr: {fontSize: 17, marginLeft: 10},
 });
 
 export default HomeScreen;
