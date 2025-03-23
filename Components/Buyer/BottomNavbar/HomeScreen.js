@@ -38,18 +38,15 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 
 import {BackHandler, Alert} from 'react-native';
-import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
 //import Carousel from 'react-native-snap-carousel';
 
-
 //import Carousel from 'react-native-snap-carousel';
-
 
 const {width} = Dimensions.get('window');
 
 const HomeScreen = ({navigation}) => {
   const refRBSheet = useRef();
-  
 
   const [loading, setLoading] = useState(false);
   const [catdata, setcatdata] = useState([]);
@@ -68,30 +65,32 @@ const HomeScreen = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-    //  getAllCat();
+      //  getAllCat();
     }, []),
   );
 
   const bannerData = [
     {
       id: 1,
-      image: 'https://dialerpstorage.blob.core.windows.net/40011/Actual_BBWZ_images%2847%29.jpeg',
+      image:
+        'https://dialerpstorage.blob.core.windows.net/40011/Actual_BBWZ_images%2847%29.jpeg',
     },
     {
       id: 2,
-      image: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_l66h_IMG_20250318_230127.jpg',
+      image:
+        'https://dialerpstorage.blob.core.windows.net/40398/Actual_l66h_IMG_20250318_230127.jpg',
     },
     {
       id: 3,
-      image: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_NVCu_images%2850%29.jpeg',
+      image:
+        'https://dialerpstorage.blob.core.windows.net/40398/Actual_NVCu_images%2850%29.jpeg',
     },
     {
       id: 4,
-      image: 'https://dialerpstorage.blob.core.windows.net/40398/Actual_xVWF_images%2849%29.jpeg',
+      image:
+        'https://dialerpstorage.blob.core.windows.net/40398/Actual_xVWF_images%2849%29.jpeg',
     },
   ];
-
-
 
   const getAllCat = async () => {
     setLoading(true);
@@ -180,30 +179,33 @@ const HomeScreen = ({navigation}) => {
           </Pressable>
         </View>
 
-      
-
-       
         <ScrollView style={{marginTop: 0}}>
-        <View style={{marginTop:0,marginBottom:10,marginStart:5,marginEnd:5}}>
-      <SwiperFlatList
-        autoplay
-        autoplayDelay={2}
-        autoplayLoop
-        index={0}
-        showPagination
-        data={bannerData}
-        renderItem={({ item }) => (
-          <Image source={{ uri: item.image }} style={styles.bannerImage}  />
-        )}
-      />
-    </View>
+          <View
+            style={{
+              marginTop: 0,
+              marginBottom: 10,
+              marginStart: 5,
+              marginEnd: 5,
+            }}>
+            <SwiperFlatList
+              autoplay
+              autoplayDelay={2}
+              autoplayLoop
+              index={0}
+              showPagination
+              data={bannerData}
+              renderItem={({item}) => (
+                <Image source={{uri: item.image}} style={styles.bannerImage} />
+              )}
+            />
+          </View>
           <View>
             <View style={styles.greybg}></View>
 
             <View style={[styles.listing, styles.bgWhite]}>
               <View>
                 <Text style={[styles.subHead, styles.boldTxt]}>
-                  All Companions
+                  Top Companions
                 </Text>
 
                 {dummyDatalistig.map((data, i) => {
@@ -241,7 +243,7 @@ const HomeScreen = ({navigation}) => {
                                 textTransform: 'uppercase',
                                 marginTop: -4,
                               }}>
-                              Add
+                              Book
                             </Text>
                           </Pressable>
 
