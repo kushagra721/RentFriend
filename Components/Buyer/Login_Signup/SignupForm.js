@@ -18,6 +18,7 @@ import {TextInput, Text, Button} from 'react-native-paper';
 import {CallApi, BaseUrl} from '../Common/Functions';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Geolocation from '@react-native-community/geolocation';
 
 const SignupForm = ({route, navigation}) => {
   const {mobile, role} = route.params;
@@ -33,17 +34,30 @@ const SignupForm = ({route, navigation}) => {
     type: role == '1' ? 'buyer' : 'seller',
     fcmToken: '',
     deviceType: 'android',
+    media: [],
+    geoLocation: {
+      type: 'Point',
+      coordinates: [77.5946, 12.9716], // longitude, latitude (e.g., Bangalore)
+    },
+    catList: [],
+    subCatList: [],
+    age: 0,
+    gender: '',
+    bio: '',
+
+    rating: '',
   });
 
   const isFormValid =
     formdata?.name?.trim() !== '' && formdata?.mobileNo?.length === 10;
 
   const Signup = async () => {
-    setloading(true)
-    console.log(formdata)
+    setloading(true);
+    console.log(formdata);
     const url = `${BaseUrl}/companio/external/signUp`;
 
     const response = await CallApi(url, formdata, 'POST');
+    console.log('body', response);
 
     if (response?.user) {
       const url2 = `${BaseUrl}/companio/external/otp`;
@@ -53,25 +67,23 @@ const SignupForm = ({route, navigation}) => {
         role: formdata?.type,
       };
 
-      console.log('body', body);
-
       const response = await CallApi(url2, body, 'POST');
 
       if (response?.status == true) {
-        setloading(false)
+        setloading(false);
         navigation.navigate('verifyotp', {
           mobile: mobile, // Replace with actual data
           otp: response?.data, // Any data you want to send
         });
       } else {
-        setloading(false)
-       
+        setloading(false);
+
         ToastAndroid.show('User not found', ToastAndroid.SHORT);
       }
-    }else{
-        setloading(false)
+    } else {
+      setloading(false);
 
-        ToastAndroid.show('api error', ToastAndroid.SHORT);
+      ToastAndroid.show('api error', ToastAndroid.SHORT);
     }
   };
 
@@ -79,62 +91,60 @@ const SignupForm = ({route, navigation}) => {
 
   return (
     <>
-    
-        <SafeAreaView style={[styles.container]}>
-          <View>
-            <View style={styles.center}>
-              <Image style={styles.logo} source={logo} resizeMode="center" />
-              <Text style={[styles.text, styles.textbold]}>
+      <SafeAreaView style={[styles.container]}>
+        <View>
+          <View style={styles.center}>
+            <Image style={styles.logo} source={logo} resizeMode="center" />
+            <Text style={[styles.text, styles.textbold]}>
               Your Friend Indeed
-              </Text>
-              {/* <Text style={styles.text}>Quick | Affordable | Trusted</Text> */}
+            </Text>
+            {/* <Text style={styles.text}>Quick | Affordable | Trusted</Text> */}
 
-              <View style={[styles.card, styles.flx]}>
-                <Pressable style={{width: '100%'}}></Pressable>
-              </View>
-
-              <TextInput
-                mode="outlined"
-                label="Name"
-                left={<TextInput.Icon icon="phone" />}
-                style={styles.input}
-                onChangeText={text => {
-                  setformdata(prev => ({...prev, name: text}));
-                }}
-              />
-
-              <TextInput
-                mode="outlined"
-                label="Mobile"
-                value={formdata.mobileNo}
-                left={<TextInput.Icon icon="phone" />}
-                style={styles.input}
-                onChangeText={text => {
-                  setformdata(prev => ({...prev, mobileNo: text}));
-                }}
-              />
-
-              <Button
-                icon="arrow-right"
-                mode="contained"
-                style={[styles.mt20, styles.button]}
-                disabled={!isFormValid}
-                onPress={() => {
-                    Signup()
-                  //  postdata();
-                }}>
-                Signup
-              </Button>
-              {/*  <Button icon="arrow-right" mode="contained" style={[styles.mt20, styles.button]} onPress={() => {navigation.navigate("home") }}>Request OTP</Button>*/}
+            <View style={[styles.card, styles.flx]}>
+              <Pressable style={{width: '100%'}}></Pressable>
             </View>
+
+            <TextInput
+              mode="outlined"
+              label="Name"
+              left={<TextInput.Icon icon="phone" />}
+              style={styles.input}
+              onChangeText={text => {
+                setformdata(prev => ({...prev, name: text}));
+              }}
+            />
+
+            <TextInput
+              mode="outlined"
+              label="Mobile"
+              value={formdata.mobileNo}
+              left={<TextInput.Icon icon="phone" />}
+              style={styles.input}
+              onChangeText={text => {
+                setformdata(prev => ({...prev, mobileNo: text}));
+              }}
+            />
+
+            <Button
+              icon="arrow-right"
+              mode="contained"
+              style={[styles.mt20, styles.button]}
+              disabled={!isFormValid}
+              onPress={() => {
+                Signup();
+                //  postdata();
+              }}>
+              Signup
+            </Button>
+            {/*  <Button icon="arrow-right" mode="contained" style={[styles.mt20, styles.button]} onPress={() => {navigation.navigate("home") }}>Request OTP</Button>*/}
           </View>
-          {loading && (
-            <View style={styles.loader}>
-              <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-          )}
-        </SafeAreaView>
-
+        </View>
+        {loading && (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
+      </SafeAreaView>
     </>
   );
 };
@@ -176,19 +186,18 @@ const styles = StyleSheet.create({
     marginBottom: -60,
   },
   container: {
-    height:"100%",
-    width:"100%",
+    height: '100%',
+    width: '100%',
     padding: 30,
     justifyContent: 'center',
     textAlign: 'center',
-    backgroundColor:"white",
-
+    backgroundColor: 'white',
   },
 
   image: {
-    height:"100%",
-    width:"100%",
-    backgroundColor:"white"
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'white',
   },
   text: {
     fontSize: 16,

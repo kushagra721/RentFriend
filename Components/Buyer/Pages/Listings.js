@@ -11,6 +11,7 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
+import {CallApi, BaseUrl} from '../Common/Functions';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useRoute} from '@react-navigation/native';
@@ -21,7 +22,46 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 
 const Listings = ({navigation}) => {
-  useFocusEffect(useCallback(() => {}, []));
+
+   const [loading, setLoading] = useState(false);
+     const [catdata, setcatdata] = useState([]);
+
+
+   useFocusEffect(
+     useCallback(() => {
+       getAllSellers();
+       //  getAllCat();
+     }, []),
+   );
+
+
+  const getAllSellers = async () => {
+    setLoading(true);
+
+    const url = `${BaseUrl}/api/seller/getListOfSellers`;
+
+    const body = {
+      location: {
+        latitude: 34.0522,
+        longitude: -118.2437,
+      },
+    };
+    // console.log("body", body)
+
+    const response = await CallApi(url, body, 'POST');
+
+    console.log('Data:sellers', response);
+
+    if (response?.status === 'success') {
+      setLoading(false);
+      setcatdata(response?.data);
+      // assuming response.data has your actual data
+    } else {
+      setLoading(false);
+      ToastAndroid.show(response?.error, ToastAndroid.SHORT);
+    }
+  };
+
 
   const dummyData = Array(6).fill({
     'Sub Sub CategoryID': 1,
@@ -38,6 +78,8 @@ const Listings = ({navigation}) => {
       'https://dialerpstorage.blob.core.windows.net/40011/Actual_Vf7h_profile-user-svgrepo-com.png', // Placeholder image
     'Item Description': 'Hey there i am Gagan Mittal',
   });
+
+
 
   return (
     <SafeAreaView style={[styles.container, styles.bgWhite]}>
@@ -174,13 +216,22 @@ const Listings = ({navigation}) => {
                 All Companions
               </Text>
 
-              {dummyDatalistig.map((data, i) => {
+              {catdata.map((data, i) => {
                 return (
-                  <View key={i} style={[styles.itemList]}>
+                  <Pressable
+                    onPress={() => {}}
+                    key={data?.id}
+                    style={[styles.itemList]}>
                     <View style={[styles.flexx]}>
-                      <View style={styles.wd80}>
+                      <Pressable
+                        onPress={() => {
+                          navigation.navigate('buyerprofile', {
+                            id: data?.id,
+                          });
+                        }}
+                        style={styles.wd80}>
                         <Text style={[styles.subTitle, styles.boldTxt]}>
-                          {data.Item}
+                          {data.name}
                         </Text>
                         <Text style={styles.greyText}>
                           <MaterialCommunityIcons
@@ -188,28 +239,35 @@ const Listings = ({navigation}) => {
                             size={17}
                             color="gold"
                           />{' '}
-                          0.0 (Reviews 0)
+                          1.0 (Reviews 10)
                         </Text>
                         <Text style={[styles.boldTxt, styles.price]}>
-                          ₹{parseInt(data.MRP, 10)}
+                          ₹
+                          {parseInt(
+                            data?.calendar?.categories[0]?.weekdaysPrice,
+                          )}
                         </Text>
                         <View style={[styles.desc]}></View>
-                      </View>
+                      </Pressable>
                       <View style={styles.wd20}>
                         <Image
                           style={styles.itemImg}
-                          source={{uri: data['Item Pic']}}
+                          source={{uri: data?.profilePic}}
                           resizeMode="cover"
                         />
 
-                        <Pressable style={styles.button}>
+                        <Pressable
+                          onPress={() => {
+                            navigation.navigate('Schedule');
+                          }}
+                          style={styles.button}>
                           <Text
                             style={{
                               color: 'white',
                               textTransform: 'uppercase',
                               marginTop: -4,
                             }}>
-                            Add
+                            Book
                           </Text>
                         </Pressable>
 
@@ -222,13 +280,19 @@ const Listings = ({navigation}) => {
                         </Pressable>
                       </View>
                     </View>
-                    <View style={[styles.flexes, {flexDirection: 'row'}]}>
+                    <Pressable
+                      onPress={() => {
+                        navigation.navigate('buyerprofile', {
+                          id: data?.id,
+                        });
+                      }}
+                      style={[styles.flexes, {flexDirection: 'row'}]}>
                       <ScrollView
                         style={{flex: 1, marginLeft: 10, marginTop: 10}}>
                         <Text>{data['Item Description']}</Text>
                       </ScrollView>
-                    </View>
-                  </View>
+                    </Pressable>
+                  </Pressable>
                 );
               })}
             </View>
@@ -273,61 +337,14 @@ const Listings = ({navigation}) => {
         </View>
       )}
 
-      {/* {loading && loading1 && loading2 && (
-        <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      )} */}
 
-      {/*
-      <RBSheet
-  ref={refRBSheet}
-  closeOnDragDown={false}
-  //closeOnPressMask={true}
-  closeOnPressBack={true}
-  height={70}
-  customStyles={{
-    wrapper: {
-      backgroundColor: "transparent",
-    },
-    draggableIcon: {
-      backgroundColor: "#000",
-    },
-    container: {
-      padding: 5,
-      backgroundColor: "#fff",
-      opacity: 1,
-      borderTopWidth: 1,
-      borderColor: "#d3d3d3",
-    },
-  }}
->
-  <ScrollView>
-    <SafeAreaView>
-   
-      {filteCartItems?.slice(0, 1)?.map((data, i) => (
-        <View key={i} style={styles.flexxes}>
-          <View style={styles.flexxes}>
-         
-            <Text style={styles.amount}>Total Price : {totalMRP}</Text>
-          </View>
+      {loading && (
+                <View style={styles.loader}>
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+              )}
 
-          <Button
-            icon="arrow-right"
-            mode="contained"
-            onPress={() => {
-              navigation.navigate("cart");
-              refRBSheet.current.close();
-            }}
-            style={styles.btn}
-          >
-            Proceed
-          </Button>
-        </View>
-      ))}
-    </SafeAreaView>
-  </ScrollView>
-          </RBSheet>*/}
+  
     </SafeAreaView>
   );
 };

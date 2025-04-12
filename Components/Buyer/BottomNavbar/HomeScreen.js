@@ -22,23 +22,29 @@ import {
   PaperProvider,
   Button,
 } from 'react-native-paper';
-// import { Card } from '@rneui/themed';
+
 import {useState, useEffect} from 'react';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Header from '../Common/Header';
-import {Card} from 'react-native-elements';
+//import {Card} from 'react-native-elements';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import {CallApi, BaseUrl} from '../Common/Functions';
+import {CallApi, BaseUrl,requestLocationPermission} from '../Common/Functions';
 
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 
 import {BackHandler, Alert} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import axios from 'axios';
+import {  ApiContext } from "../../Context";
+
+import { Platform, PermissionsAndroid } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+
 //import Carousel from 'react-native-snap-carousel';
 
 //import Carousel from 'react-native-snap-carousel';
@@ -47,6 +53,8 @@ const {width} = Dimensions.get('window');
 
 const HomeScreen = ({navigation}) => {
   const refRBSheet = useRef();
+
+  const { coordinates, setcoordinates } = useContext(ApiContext);
 
   const [loading, setLoading] = useState(false);
   const [catdata, setcatdata] = useState([]);
@@ -65,9 +73,51 @@ const HomeScreen = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
+      getAllSellers();
+      requestAndLogLocation()
       //  getAllCat();
     }, []),
   );
+  const requestAndLogLocation = async () => {
+    const hasLocationPermission = async () => {
+      if (Platform.OS === 'ios') {
+        return true; // iOS handles it via Info.plist and user prompt
+      }
+  
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'This app needs access to your location',
+          buttonPositive: 'OK',
+        }
+      );
+  
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    };
+  
+    const granted = await hasLocationPermission();
+  
+    if (!granted) {
+      console.warn('Location permission not granted');
+      return;
+    }
+  
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log('Coordinates:', latitude, longitude);
+      },
+      (error) => {
+        console.error('Location error:', error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+      }
+    );
+  };
 
   const bannerData = [
     {
@@ -91,6 +141,33 @@ const HomeScreen = ({navigation}) => {
         'https://dialerpstorage.blob.core.windows.net/40398/Actual_xVWF_images%2849%29.jpeg',
     },
   ];
+
+  const getAllSellers = async () => {
+    setLoading(true);
+
+    const url = `${BaseUrl}/api/seller/getListOfSellers`;
+
+    const body = {
+      location: {
+        latitude: 34.0522,
+        longitude: -118.2437,
+      },
+    };
+    // console.log("body", body)
+
+    const response = await CallApi(url, body, 'POST');
+
+    console.log('Data:sellers', response);
+
+    if (response?.status === 'success') {
+      setLoading(false);
+      setcatdata(response?.data);
+      // assuming response.data has your actual data
+    } else {
+      setLoading(false);
+      ToastAndroid.show(response?.error, ToastAndroid.SHORT);
+    }
+  };
 
   const getAllCat = async () => {
     setLoading(true);
@@ -208,13 +285,22 @@ const HomeScreen = ({navigation}) => {
                   Top Companions
                 </Text>
 
-                {dummyDatalistig.map((data, i) => {
+                {catdata.map((data, i) => {
                   return (
-                    <View key={i} style={[styles.itemList]}>
+                    <Pressable
+                      onPress={() => {}}
+                      key={data?.id}
+                      style={[styles.itemList]}>
                       <View style={[styles.flexx]}>
-                        <View style={styles.wd80}>
+                        <Pressable
+                          onPress={() => {
+                            navigation.navigate('buyerprofile', {
+                              id: data?.id,
+                            });
+                          }}
+                          style={styles.wd80}>
                           <Text style={[styles.subTitle, styles.boldTxt]}>
-                            {data.Item}
+                            {data.name}
                           </Text>
                           <Text style={styles.greyText}>
                             <MaterialCommunityIcons
@@ -222,21 +308,28 @@ const HomeScreen = ({navigation}) => {
                               size={17}
                               color="gold"
                             />{' '}
-                            0.0 (Reviews 0)
+                            1.0 (Reviews 10)
                           </Text>
                           <Text style={[styles.boldTxt, styles.price]}>
-                            ₹{parseInt(data.MRP, 10)}
+                            ₹
+                            {parseInt(
+                              data?.calendar?.categories[0]?.weekdaysPrice,
+                            )}
                           </Text>
                           <View style={[styles.desc]}></View>
-                        </View>
+                        </Pressable>
                         <View style={styles.wd20}>
                           <Image
                             style={styles.itemImg}
-                            source={{uri: data['Item Pic']}}
+                            source={{uri: data?.profilePic}}
                             resizeMode="cover"
                           />
 
-                          <Pressable style={styles.button}>
+                          <Pressable
+                            onPress={() => {
+                              navigation.navigate('Schedule');
+                            }}
+                            style={styles.button}>
                             <Text
                               style={{
                                 color: 'white',
@@ -256,13 +349,19 @@ const HomeScreen = ({navigation}) => {
                           </Pressable>
                         </View>
                       </View>
-                      <View style={[styles.flexes, {flexDirection: 'row'}]}>
+                      <Pressable
+                        onPress={() => {
+                          navigation.navigate('buyerprofile', {
+                            id: data?.id,
+                          });
+                        }}
+                        style={[styles.flexes, {flexDirection: 'row'}]}>
                         <ScrollView
                           style={{flex: 1, marginLeft: 10, marginTop: 10}}>
                           <Text>{data['Item Description']}</Text>
                         </ScrollView>
-                      </View>
-                    </View>
+                      </Pressable>
+                    </Pressable>
                   );
                 })}
               </View>

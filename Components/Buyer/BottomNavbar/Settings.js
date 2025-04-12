@@ -19,19 +19,13 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Settings = ({navigation}) => {
-  const [logindata, setlogindata] = useState({});
-  useFocusEffect(
-    useCallback(() => {
-      getuserData();
-    }, []),
-  );
+import {  ApiContext } from "../../Context";
+import { useContext } from "react";
 
-  const getuserData = async () => {
-    const data = await AsyncStorage.getItem('logindata_companio');
-    //console.log('Stored Data:', JSON.parse(data));
-    setlogindata(JSON.parse(data));
-  };
+const Settings = ({navigation}) => {
+
+  const { logindata } = useContext(ApiContext);
+
 
   return (
     <SafeAreaView style={[styles.container, styles.bgWHite]}>

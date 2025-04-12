@@ -9,10 +9,13 @@ import Login from '../Login_Signup/Login';
 import VerifyOTP from '../Login_Signup/VerifyOTP';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from '../BottomNavbar/HomeScreen';
-import Settings from '../BottomNavbar/Settings';
+ import Settings from '../BottomNavbar/Settings';
 import Listings from '../Pages/Listings';
-import SignupForm from '../Login_Signup/SignupForm';
-import Category from '../BottomNavbar/Category';
+ import SignupForm from '../Login_Signup/SignupForm';
+import Profile from '../Login_Signup/Profile';
+ import Category from '../BottomNavbar/Category';
+import Schedule from '../Pages/Schedule';
+import { Context } from '../../Context';
 
 // Dummy Screens
 
@@ -117,6 +120,7 @@ const BottomTabs = () => {
 const AppNavigator = () => {
   return (
     <NavigationContainer>
+      <Context>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="FirstTheme" component={SplashScreen} />
         <Stack.Screen name="login" component={Login} />
@@ -124,7 +128,10 @@ const AppNavigator = () => {
         <Stack.Screen name="signup" component={SignupForm} />
         <Stack.Screen name="Home" component={BottomTabs} />
         <Stack.Screen name="listings" component={Listings} />
+        <Stack.Screen name="buyerprofile" component={Profile} />
+        <Stack.Screen name="Schedule" component={Schedule} />
       </Stack.Navigator>
+      </Context>
     </NavigationContainer>
   );
 };

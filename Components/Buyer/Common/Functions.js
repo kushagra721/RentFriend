@@ -1,4 +1,10 @@
+
+
+import { Platform, PermissionsAndroid } from 'react-native';
+
+
 const BaseUrl = "https://companio.onrender.com"
+
 
 const CallApi = async (url, body, method) => {
   console.log("url",url)
@@ -25,5 +31,9 @@ const CallApi = async (url, body, method) => {
   }
 };
 
+ const requestLocationPermission = async () => {
 
-export { CallApi, BaseUrl };
+};
+
+
+export { CallApi, BaseUrl ,requestLocationPermission};

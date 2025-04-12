@@ -143,6 +143,7 @@ const Login = ({navigation}) => {
                 style={styles.input}
                 keyboardType="numeric"
                 maxLength={10}
+                 returnKeyType="done"
                 onChangeText={text => {
                   // Remove any non-numeric characters
                   const cleanedText = text.replace(/[^0-9]/g, '');

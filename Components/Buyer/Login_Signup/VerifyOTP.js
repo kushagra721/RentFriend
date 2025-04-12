@@ -6,7 +6,7 @@ import {
   Image,
   Pressable,
   SafeAreaView,
-  ActivityIndicator,ToastAndroid,
+  ActivityIndicator, ToastAndroid,
   ImageBackground,
   View,
 } from "react-native";
@@ -21,6 +21,8 @@ import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {  ApiContext } from "../../Context";
+import { useContext } from "react";
 
 
 
@@ -29,9 +31,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const VerifyOTP = ({route, navigation }) => {
+
+const VerifyOTP = ({ route, navigation }) => {
   const { mobile, otp } = route.params;
-  console.log(mobile,otp)
+  const { setlogindata } = useContext(ApiContext);
+  console.log(mobile, otp)
 
   const [otpValue, setOtpValue] = useState("");
   const [limitotp, setlimitotp] = useState(1);
@@ -41,7 +45,7 @@ const VerifyOTP = ({route, navigation }) => {
 
 
   useEffect(() => {
-   
+
   }, []);
 
   const inputs = Array(4).fill(0).map((_, index) => useRef(null));
@@ -66,28 +70,30 @@ const VerifyOTP = ({route, navigation }) => {
     }
   };
 
-  const VerifyOTP = async() =>{
+  const VerifyOTP = async () => {
     console.log("VerifyOTP function called");
 
     const url = `${BaseUrl}/companio/external/otp/verify`
 
     const body = {
-      mobile_number : parseInt(mobile),
-      otp :parseInt(otpValue) 
+      mobile_number: parseInt(mobile),
+      otp: parseInt(otpValue)
     }
 
     console.log("body", body)
 
-    const response = await CallApi(url, body,"POST");
-    console.log("verifyres",response)
+    const response = await CallApi(url, body, "POST");
+    console.log("verifyres", response)
 
-    if(response?.status ==  "success"){
+    if (response?.status == "success") {
       await AsyncStorage.setItem('logindata_companio', JSON.stringify(response?.data));
+
+      setlogindata(response?.data);
 
 
       navigation.replace("Home")
-      
-    }else{
+
+    } else {
 
       ToastAndroid.show(response?.message, ToastAndroid.SHORT);
 
@@ -126,6 +132,8 @@ const VerifyOTP = ({route, navigation }) => {
                   style={styles.otpinput}
                   maxLength={1}
                   keyboardType="numeric"
+
+                  returnKeyType="done"
                   ref={inputs[index]}
                   onKeyPress={({ nativeEvent: { key } }) => handleKeyPress(index, key)}
                   onChangeText={(text) => handleChange(text, index)}
@@ -135,10 +143,10 @@ const VerifyOTP = ({route, navigation }) => {
             {limitotp <= 2 && (
               // <Pressable onPress={() => fun_ChecksacchasathiData()}>
               <Pressable
-              onPress={() => {
-               setlimitotp(limitotp + 1);
-              }}
-            >
+                onPress={() => {
+                  setlimitotp(limitotp + 1);
+                }}
+              >
                 <Text style={[styles.text, styles.blue, styles.bold]}>
                   Resend Code
                 </Text></Pressable>
@@ -153,7 +161,7 @@ const VerifyOTP = ({route, navigation }) => {
               style={[styles.mt20, styles.button]}
               onPress={() => {
                 VerifyOTP()
-            
+
               }}
               disabled={otpValue.length < 4}
             >

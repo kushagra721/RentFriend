@@ -13,6 +13,8 @@ import logo from "../../Icons/Icons/app_logo.jpeg";
 import image from "../../Icons/Icons/splashScreen.png";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {  ApiContext } from "../../Context";
+import { useContext } from "react";
 // import { getcoldata } from "./Apicall";
 
 
@@ -24,6 +26,8 @@ const SplashScreen = ({ navigation }) => {
   const [otplogininfo, setotplogininfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { setlogindata } = useContext(ApiContext);
+
 
   useFocusEffect(
     useCallback(() => {
@@ -33,6 +37,7 @@ const SplashScreen = ({ navigation }) => {
           if (loginInfoString) {
             const loginInfoObject = JSON.parse(loginInfoString);
             setotplogininfo(loginInfoObject);
+            setlogindata(loginInfoObject);
           }
         } catch (error) {
           console.error("Error retrieving Logininfo from AsyncStorage:", error);
