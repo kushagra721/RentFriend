@@ -32,7 +32,7 @@ import Header from '../Common/Header';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import {CallApi, BaseUrl,requestLocationPermission} from '../Common/Functions';
+import {CallApi, BaseUrl,requestAndGetLocation} from '../Common/Functions';
 
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
@@ -73,51 +73,27 @@ const HomeScreen = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-      getAllSellers();
-      requestAndLogLocation()
-      //  getAllCat();
-    }, []),
-  );
-  const requestAndLogLocation = async () => {
-    const hasLocationPermission = async () => {
-      if (Platform.OS === 'ios') {
-        return true; // iOS handles it via Info.plist and user prompt
-      }
+      let isActive = true;
   
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Permission',
-          message: 'This app needs access to your location',
-          buttonPositive: 'OK',
+      const fetchData = async () => {
+        if (isActive) {
+          getAllSellers();
+          const location = await requestAndGetLocation();
+          if (location) {
+            console.log('User Location:', location);
+          } else {
+            console.log('Location not available');
+          }
         }
-      );
+      };
   
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    };
+      fetchData();
   
-    const granted = await hasLocationPermission();
-  
-    if (!granted) {
-      console.warn('Location permission not granted');
-      return;
-    }
-  
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        console.log('Coordinates:', latitude, longitude);
-      },
-      (error) => {
-        console.error('Location error:', error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000,
-      }
-    );
-  };
+      return () => {
+        isActive = false; // Cleanup logic if needed
+      };
+    }, [])
+  );
 
   const bannerData = [
     {
@@ -288,16 +264,16 @@ const HomeScreen = ({navigation}) => {
                 {catdata.map((data, i) => {
                   return (
                     <Pressable
-                      onPress={() => {}}
+                    onPress={() => {
+                      navigation.navigate('buyerprofile', {
+                        id: data?.id,
+                      });
+                    }}
                       key={data?.id}
                       style={[styles.itemList]}>
                       <View style={[styles.flexx]}>
-                        <Pressable
-                          onPress={() => {
-                            navigation.navigate('buyerprofile', {
-                              id: data?.id,
-                            });
-                          }}
+                        <View
+                         
                           style={styles.wd80}>
                           <Text style={[styles.subTitle, styles.boldTxt]}>
                             {data.name}
@@ -317,7 +293,7 @@ const HomeScreen = ({navigation}) => {
                             )}
                           </Text>
                           <View style={[styles.desc]}></View>
-                        </Pressable>
+                        </View>
                         <View style={styles.wd20}>
                           <Image
                             style={styles.itemImg}
@@ -327,7 +303,9 @@ const HomeScreen = ({navigation}) => {
 
                           <Pressable
                             onPress={() => {
-                              navigation.navigate('Schedule');
+                              navigation.navigate('Schedule', {
+                                id: data?.id,
+                              });
                             }}
                             style={styles.button}>
                             <Text
@@ -350,11 +328,7 @@ const HomeScreen = ({navigation}) => {
                         </View>
                       </View>
                       <Pressable
-                        onPress={() => {
-                          navigation.navigate('buyerprofile', {
-                            id: data?.id,
-                          });
-                        }}
+                       
                         style={[styles.flexes, {flexDirection: 'row'}]}>
                         <ScrollView
                           style={{flex: 1, marginLeft: 10, marginTop: 10}}>
@@ -581,8 +555,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'start',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   subHead: {fontSize: 22, padding: 20},
   catName: {

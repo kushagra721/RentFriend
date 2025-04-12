@@ -232,6 +232,7 @@ const Category = ({navigation}) => {
                       key={data._id}
                       style={styles.cardContainer2}
                       onPress={() => {
+                        refRBSheet.current.close();
                         navigation.navigate('listings');
                       }}>
                       <View>

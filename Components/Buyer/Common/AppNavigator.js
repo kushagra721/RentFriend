@@ -16,6 +16,10 @@ import Profile from '../Login_Signup/Profile';
  import Category from '../BottomNavbar/Category';
 import Schedule from '../Pages/Schedule';
 import { Context } from '../../Context';
+import Thankyou from '../Pages/Thankyou';
+import Terms from '../Pages/Terms';
+import Privacy from '../Pages/Privacy';
+import Cancelation from '../Pages/Cancelation';
 
 // Dummy Screens
 
@@ -130,6 +134,10 @@ const AppNavigator = () => {
         <Stack.Screen name="listings" component={Listings} />
         <Stack.Screen name="buyerprofile" component={Profile} />
         <Stack.Screen name="Schedule" component={Schedule} />
+        <Stack.Screen name="Thankyou" component={Thankyou} />
+        <Stack.Screen name="terms" component={Terms} />
+    <Stack.Screen name="privacy" component={Privacy} />
+    <Stack.Screen name="cancellation" component={Cancelation} />
       </Stack.Navigator>
       </Context>
     </NavigationContainer>

@@ -90,7 +90,7 @@ const Listings = ({navigation}) => {
           //color="#000"
           style={{marginRight: 10}}
           onPress={() => {
-            //  navigation.navigate("User-Home");
+            navigation.goBack();
           }}
         />
         <Text style={[styles.titles]}>Companions</Text>
